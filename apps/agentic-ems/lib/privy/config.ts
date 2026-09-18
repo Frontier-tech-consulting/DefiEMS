@@ -18,6 +18,8 @@ import type { PrivyClientConfig } from "@privy-io/react-auth";
  *   - Smart wallets → enabled, type "Safe", networks Base / Polygon / Optimism
  *   - App settings → allowed domains include this origin
  */
+// Literal member access: Next inlines only a statically-referenced public variable into the client
+// bundle. Reading it through the catalog (a dynamic lookup) left this empty in the browser.
 export const PRIVY_APP_ID = process.env.NEXT_PUBLIC_PRIVY_APP_ID ?? "";
 
 /** True when the app has enough config to mount Privy. */

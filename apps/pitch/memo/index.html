@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Agentic EMS — investment memo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="memo.css" />
+  </head>
+
+  <body>
+    <!-- ══ page one ══════════════════════════════════════════════════════ -->
+    <section class="page">
+      <div class="head">
+        <span class="head-mark">Agentic EMS</span>
+        <span class="head-sub">Investment memo · R3sidency x Construct</span>
+        <span class="head-page">product</span>
+      </div>
+
+      <h1>A trade EMS for on-chain capital, where the agent's reasoning is a database query away.</h1>
+
+      <p class="lede">
+        Constraint-bounded agents reallocate capital against quantile forecasts, and every decision
+        traces to the projection that justified it. The execution is real today; the audit trail is
+        the part nobody else builds.
+      </p>
+
+      <div class="summary">
+        <div class="summary-cell">
+          <div class="summary-value">$304M / yr</div>
+          <div class="summary-label">TAM at 25 bps on managed on-chain capital</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-value">$11.9M / yr</div>
+          <div class="summary-label">SOM at 5% of the crypto fund segment, 3–5 years</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-value">29</div>
+          <div class="summary-label">contract tests, and 21/21 registry addresses verified on two chains</div>
+        </div>
+        <div class="summary-cell">
+          <div class="summary-value accent">$300K</div>
+          <div class="summary-label">twelve weeks, to v1 and the first desks</div>
+        </div>
+      </div>
+
+      <h2>Product</h2>
+
+      <p>
+        Three layers, and they are at three different stages of being built. Naming that is the first
+        honest thing this memo can do.
+      </p>
+
+      <ul>
+        <li>
+          <strong>The terminal</strong> — a desk and a console for an operator holding capital
+          on-chain. Live. An operator asks a question; an agent runs a five-node cycle; the answer,
+          the forecast behind it and the guardrails that gated it all land in one surface.
+        </li>
+        <li>
+          <strong>The infrastructure beneath it</strong> — forecast (TimesFM-3 quantile projections in
+          a ledger), decision (the agent cycle), risk (typed constraints that can force a re-plan),
+          custody (a Safe owned by an embedded signer), settlement (Aqua/SwapVM, Uniswap v4, 1inch,
+          Morpho). Built and running, with the gaps listed on page 3.
+        </li>
+        <li>
+          <strong>The instrument</strong> — the web3-aligned ETF wrapper. This is the market this is
+          infrastructure <em>for</em>, and it is not built. It is named here so that no reader
+          discovers the omission later.
+        </li>
+      </ul>
+
+      <h2>What the product actually does, worked once</h2>
+
+      <p>
+        A strategy's yield falls under its floor, or its volatility breaches its cap, and the position
+        flees. The volatile leg swaps to a stablecoin through a <span class="mono">SwapVM</span>
+        program containing <strong>an instruction we wrote</strong> —
+        <span class="mono">YieldBandFlight</span> at opcode <span class="mono">0xb3</span> — and the
+        proceeds are deposited into a Morpho vault. The whole thing is two Aqua apps, deliberately
+        separate: a router that is a canonical <span class="mono">SwapVM</span> plus our instruction,
+        and a refuge app that "holds no pricing logic at all; its whole job is that one call moves
+        both legs back to the maker, which removes the window of half-executed risk between the swap
+        and the deposit."
+      </p>
+
+      <p>
+        That is the product's unit of work: an intervention calibrated to one moment, executed
+        atomically, dissolved. The deck calls this product:moment fit, because that is the term the
+        Machine Economy thesis uses for it and it is exactly what this is.
+      </p>
+
+      <div class="foot">
+        <span>Agentic EMS</span>
+        <span>September 2026</span>
+        <span class="dim">Every figure in this memo is sourced or bracketed.</span>
+      </div>
+    </section>
+
+    <!-- ══ page two ══════════════════════════════════════════════════════ -->
+    <section class="page">
+      <div class="head">
+        <span class="head-mark">Agentic EMS</span>
+        <span class="head-sub">Why now · market · competition</span>
+        <span class="head-page">market · competition</span>
+      </div>
+
+      <h2>Why now</h2>
+
+      <blockquote>
+        Any two of these inventions without the third, and you hit a ceiling.
+        <cite>Fabric Ventures — the three converging inventions</cite>
+      </blockquote>
+
+      <p>
+        Specialised accelerated compute means a quantile band per pool, per request, in under a
+        second. Large language models mean an agent that can read a constraint set and propose a
+        reallocation inside it. Programmable blockchains mean settlement with no intermediary and a
+        receipt for every action — <strong
+          >the audit trail is native to the substrate rather than bolted onto it.</strong
+        >
+      </p>
+
+      <p>The standards that close the loop have landed recently:</p>
+
+      <ul>
+        <li><strong>ERC-8004</strong> — agent reputation portable across counterparties (mainnet, January 2026).</li>
+        <li><strong>EIP-4337</strong> — account abstraction; 26M smart wallets and counting.</li>
+        <li>
+          <strong>Scale</strong> — $27.6T settled on-chain in 2024, rivalling Visa and Mastercard
+          combined; and by May 2026 a Chainlink × Ark Invest report put autonomous agents at roughly
+          <strong>30% of TVL in top-tier DeFi pools</strong>.
+        </li>
+      </ul>
+
+      <p class="dim">
+        That last figure is the reason this company should exist now rather than in 2022. The capital
+        is already a third machine-managed. The tooling around it is not.
+      </p>
+
+      <h2>Market</h2>
+
+      <p>
+        Sized three ways, all three reported, because a single method is a guess with a number
+        attached.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 46%">Method</th>
+            <th>Working</th>
+            <th class="num">Result</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Top-down</strong> — fee pool on professionally managed on-chain capital</td>
+            <td class="dim">
+              $95.0B crypto hedge fund AUM + $26.7B managed tokenized/RWA, at 25 bps
+            </td>
+            <td class="num"><strong>$304M / yr</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Bottom-up</strong> — the segment that rebalances</td>
+            <td class="dim">
+              400+ crypto hedge funds at a mean $237M, at 25 bps. The split between funds that trade
+              on-chain and those that hold is <span class="ph">[share of funds that trade on-chain]</span> — unsourced,
+              so not guessed
+            </td>
+            <td class="num"><strong>$237M / yr</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Value theory</strong> — what a desk pays to not lose a position to a missed band</td>
+            <td class="dim">
+              At 100 bps — what an actual manager charges — the same capital is $1.2B/yr, and the
+              question becomes what share of the management fee an execution-and-risk layer defends
+            </td>
+            <td class="num"><strong>$1.2B / yr</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        <strong
+          >The near-term business is a $5–12M ARR opportunity at 2–5% penetration of the fund
+          segment.</strong
+        >
+        That is real and it is not a decacorn, and this memo will not pretend otherwise. What makes it
+        large is the ETF layer, where the capital base is orders of magnitude bigger —
+        <span class="ph">[tokenized fund market, sourced]</span>, a figure we could not source and
+        therefore will not quote. The ceiling of $21.5T a year in stablecoin volume is not quoted
+        either: 88% of it is exchange trading, bots and arbitrage, which is flow we do not serve.
+      </p>
+
+      <p class="dim">
+        Sources: CoinLaw (2026) · RWA.xyz (Jun 2026) · Crypto Fund Research (Mar 2026) ·
+        stablecoininsider (2026).
+      </p>
+
+      <h2>Competition</h2>
+
+      <p>
+        <strong>Brava Finance is the closest competitor and the deck names it.</strong> An
+        institutional platform for allocating stablecoin and tokenized credit: real-time risk scoring,
+        mandate automation to codify allocation policies, cross-chain execution across DeFi and RWA,
+        audit-ready reporting, non-custodial execution from the allocator's wallet via Safe. That is
+        our custody model and our pitch, largely.
+      </p>
+
+      <p>The difference is two words, and both are checkable in the code:</p>
+
+      <ul>
+        <li>
+          <strong>Policy versus forecast.</strong> A mandate is a static rule. Ours is a quantile
+          forecast with a confidence band that decides when the band is breached — q10/q50/q90 in a
+          forecast ledger, with calibration measured against realised yield.
+        </li>
+        <li>
+          <strong>Reported versus required.</strong> Their audit is a report <em>about</em> decisions.
+          Ours is a schema a decision cannot be written without:
+          <span class="mono">citations: z.array(...).min(1)</span>. An ungrounded answer degrades to
+          an explicit <span class="mono">HOLD</span> marked <span class="mono">ungrounded</span>
+          rather than passing quietly.
+        </li>
+      </ul>
+
+      <p>
+        The honest positioning is therefore <strong>forecast-driven × structurally required</strong>,
+        not "automated and accountable" — because that quadrant is not empty, and claiming it would be
+        the first thing a careful reader checks and disproves. The third category of alternative,
+        which pitches usually omit because it is unglamorous and correct, is
+        <strong>non-consumption: a human with a multisig, a spreadsheet and a Telegram thread.</strong>
+        That is the incumbent, it is free, and it is what this has to displace.
+      </p>
+
+      <div class="foot">
+        <span>Agentic EMS</span>
+        <span>September 2026</span>
+      </div>
+    </section>
+
+    <!-- ══ page three ════════════════════════════════════════════════════ -->
+    <section class="page">
+      <div class="head">
+        <span class="head-mark">Agentic EMS</span>
+        <span class="head-sub">Evidence · gaps · the ask</span>
+        <span class="head-page">evidence · gaps · the ask</span>
+      </div>
+
+      <h2>Traction, in the only currency we have</h2>
+
+      <p>
+        No users, no revenue, no LOIs. What exists is a working system and evidence that can be
+        re-derived by a stranger.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width: 64%">Claim</th>
+            <th>Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>21/21 registry addresses verified against live chain state</strong>, on Optimism <em>and</em> Polygon</td>
+            <td class="mono">pnpm run smoke</td>
+          </tr>
+          <tr>
+            <td><span class="mono">quote(amountOut) === swap(amountOut)</span>, and the fill landing exactly on the band — 3,400 USDC for 1 WETH</td>
+            <td class="mono">fork test</td>
+          </tr>
+          <tr>
+            <td><strong>29 contract tests</strong> with no network</td>
+            <td class="mono">forge test</td>
+          </tr>
+          <tr>
+            <td>
+              <span class="mono">0xb3</span> provably ours — the same program runs on our router and
+              reverts <span class="mono">UnknownOpcode(0xb3)</span> on the canonical one
+            </td>
+            <td class="mono">OpcodeOwnershipTest</td>
+          </tr>
+          <tr>
+            <td>The guard is inert when unarmed</td>
+            <td class="mono">paired negative test</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="dim">
+        Reproducible at a pinned fork block, with the evidence committed to the repository.
+        <span class="ph">[traction]</span> — add anything not already in the repo.
+      </p>
+
+      <h2>The team</h2>
+
+      <p>
+        <strong>Dhruv Malik — founder.</strong> Six years as a Web3 protocol engineer and
+        smart-contracts auditor, and co-founder of Extra Labs, a geospatial 3D reconstruction platform.
+        He has shipped and audited the execution half of this product before: protocol code, custody
+        paths, and a record that has to be right the first time.
+      </p>
+
+      <p>
+        <strong>Specialists, in discussion.</strong> <span class="ph">[specialist name]</span>, a
+        former fixed-income trader who went on to run DeFi at a major L2 chain, owns the half a
+        protocol engineer cannot claim alone — how a desk sizes, hedges and defends a position when the
+        band breaks. <span class="ph">[mentor name]</span> spent five to six years as a fixed-income
+        trader at Bloomberg, building some of the terminal's most complex components, multi-asset risk
+        synthesis among them, and advises on the risk layer the guardrails are built from.
+      </p>
+
+      <h2>What we know is missing</h2>
+
+      <p>
+        Taken from the repository's own documentation, where it is already written this way. An
+        investor who finds these unaided will trust everything above less.
+      </p>
+
+      <ol>
+        <li>
+          <strong>Nothing is fully committed yet.</strong> The work exists as reviewed changes rather
+          than a clean history; 22 atomic commits are planned. Process, not engineering.
+        </li>
+        <li>
+          <strong>Intent persistence is missing.</strong> The intent table carries the typed-data hash
+          that binds a signature to the payload an operator actually reviewed, and nothing writes or
+          reads it — so an intent's identifier is currently a caller-supplied handle rather than a
+          reference to something that was reviewed.
+        </li>
+        <li>
+          <strong>Custody caps are not enforced.</strong> Per-transaction and daily caps and the
+          allowlist exist as schema, and nothing consults them. Enforcing them needs the store above.
+        </li>
+        <li>
+          <strong>Position creation is unencoded, deliberately.</strong> The entry point is an actions
+          batch whose command bytes could not be retrieved, so it was left rather than guessed — a
+          wrong byte executes the neighbouring action.
+        </li>
+        <li>
+          <strong>The ETF wrapper does not exist.</strong> It is the market, not the product.
+        </li>
+        <li>
+          <strong>Two components render nowhere</strong> and the risk snapshot store is unconfigured on
+          the deployed surface, which the product says out loud rather than hiding.
+        </li>
+      </ol>
+
+      <h2>The ask</h2>
+
+      <p>
+        <strong>$300K for twelve weeks</strong>, ordered so that each tranche funds the next and
+        nothing is spent on presence before there is a version to show.
+      </p>
+
+      <ul>
+        <li>
+          <strong>Build v1.</strong> Inference and cloud for the platform's own research — research
+          about the product, not our own AI workflows — and a minimal salary for a twelve-week base in
+          SF or London.
+        </li>
+        <li>
+          <strong>Buy the room.</strong> The Web3 events worth attending, promoted through Aladdin DAO,
+          and a tutorial series that shows the system working rather than describing it.
+        </li>
+        <li>
+          <strong>Open the market.</strong> From what remains: governance proposals to prominent
+          lending protocols and a prediction market. Once v1 is live, sales engineering with the
+          trading firms that already run Web3 desks.
+        </li>
+      </ul>
+
+      <div class="foot">
+        <span>Agentic EMS</span>
+        <span>R3sidency x Construct · September 2026</span>
+      </div>
+    </section>
+  </body>
+</html>

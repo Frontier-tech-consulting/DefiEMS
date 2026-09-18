@@ -1,3 +1,4 @@
+import { transactionLinks } from "@ethonline2026/order-execution-layer";
 /**
  * The HTTP surface — grouped by the lineage of §5.3.
  *
@@ -25,6 +26,7 @@ import { CHAIN_KEYS } from "@ethonline2026/oneinch-aqua";
 import { IntentLegSchema, type IntentLeg } from "@ethonline2026/execution-domain";
 import { UnsignedTransactionSchema } from "@ethonline2026/order-execution-layer/port";
 import { assessApproval, resolveLimits, type ApprovalRequest } from "./approval.js";
+import { evaluateWalletRequest, executeWalletRequest } from "./walletRequest.js";
 import { describeRisk, type RiskNotice } from "./risk.js";
 import { ExecutionReadModel, type ExecutionStepRow, type SessionRow } from "@ethonline2026/timeseries";
 import type { ExecutionRuntime } from "./runtime.js";
@@ -344,6 +346,46 @@ export function buildApp(options: AppOptions): FastifyInstance {
    * question the operator is actually being asked at this point — and answering it here rather than
    * in the UI keeps the figure the same one the approval stage re-reads.
    */
+  // ── WalletConnect bridge ────────────────────────────────────────────────────
+
+  /**
+   * Sign a request that arrived from a dapp over WalletConnect.
+   *
+   * The browser asks; this decides. `evaluateWalletRequest` is an allowlist — chain, method, target
+   * contract, value ceiling — and it answers with the reason it refused, because a user told only
+   * "rejected" cannot tell a policy boundary from a bug and will retry the same thing.
+   *
+   * A request that needs no key is answered without one, so a dapp asking which account is
+   * connected does not cost a signature.
+   */
+  app.post("/wallet/sign", async (request, reply) => {
+    await authenticator.authenticate(request);
+
+    const body = request.body as { method?: unknown; chainId?: unknown; params?: unknown } | undefined;
+    if (body === undefined || typeof body.method !== "string" || typeof body.chainId !== "string") {
+      throw new HttpError("BAD_REQUEST", "Expected { method, chainId, params }.");
+    }
+
+    const decision = evaluateWalletRequest({ method: body.method, chainId: body.chainId, params: body.params });
+    if (!decision.ok) {
+      return reply.code(403).send({ error: { message: decision.reason } });
+    }
+
+    try {
+      const result = await executeWalletRequest(runtime.signer, {
+        method: body.method,
+        chainId: body.chainId,
+        params: body.params,
+      });
+      return reply.send({ result });
+    } catch (cause) {
+      // A deployment with no key is a configuration state, not a client error: it is reported as
+      // unavailable with the reason, so a dapp shows something truer than "rejected".
+      return reply.code(503).send({
+        error: { message: cause instanceof Error ? cause.message : "The request could not be completed." },
+      });
+    }
+  });
   app.post("/runs/:id/simulate", async (request, reply) => {
     const userId = await authenticator.authenticate(request);
     const { id } = request.params as { id: string };
@@ -749,6 +791,21 @@ export function buildApp(options: AppOptions): FastifyInstance {
     const dstTxHash = typeof receiving["txHash"] === "string" ? receiving["txHash"] : null;
     const dstChainId = typeof receiving["chainId"] === "number" ? receiving["chainId"] : null;
 
+    /**
+     * Both halves of the transfer, each on the explorer that can actually answer for it.
+     *
+     * The source hash alone is not enough for a bridge: it proves the transfer left and says nothing
+     * about whether it arrived, which is the question being asked. LI.FI publishes its own scan, so
+     * that is the primary link; the chain explorers carry the individual legs.
+     */
+    const links = transactionLinks({
+      txHash,
+      chainId: fromChainId,
+      source: "lifi",
+      ...(dstTxHash === null ? {} : { deliveredTxHash: dstTxHash }),
+      ...(dstChainId === null ? {} : { destinationChainId: dstChainId }),
+    });
+
     if (dstTxHash !== null) {
       await runtime.history.recordEvents([
         {
@@ -771,6 +828,16 @@ export function buildApp(options: AppOptions): FastifyInstance {
             srcTxHash: txHash,
             kind: "bridge",
             status: "confirmed",
+            // Flattened to strings: the event payload is a JSON column, and the domain already
+            // names these two fields for the source and destination explorers.
+            ...(links === undefined
+              ? {}
+              : {
+                  scanLabel: links.primary.label,
+                  scanUrl: links.primary.url,
+                  ...(links.sourceChain === undefined ? {} : { srcExplorerUrl: links.sourceChain.url }),
+                  ...(links.destination === undefined ? {} : { dstExplorerUrl: links.destination.url }),
+                }),
           },
         },
       ]);
@@ -784,6 +851,7 @@ export function buildApp(options: AppOptions): FastifyInstance {
       dstChainId,
       tool: typeof provider["tool"] === "string" ? provider["tool"] : null,
       substatus: typeof provider["substatus"] === "string" ? provider["substatus"] : null,
+      links: links ?? null,
       recorded: dstTxHash !== null,
     });
   });

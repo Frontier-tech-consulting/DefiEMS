@@ -1,3 +1,4 @@
+import { assertCatalogKeys } from "@ethonline2026/env";
 /**
  * Configuration for the inference service.
  *
@@ -63,7 +64,7 @@ export const InferenceEnvSchema = z.object({
   GOOGLE_CLOUD_PROJECT: z.string().optional(),
   GOOGLE_CLOUD_LOCATION: z.string().default("us-central1"),
   GOOGLE_SERVICE_ACCOUNT_KEY: z.string().optional(),
-  VERTEX_AI_MODEL: z.string().default("gemini-2.5-flash-lite"),
+  VERTEX_AI_MODEL: z.string().default("gemini-2.5-flash"),
   VERTEX_AI_TEMPERATURE: z.coerce.number().min(0).max(2).default(0.1),
   VERTEX_EMBEDDING_MODEL: z.string().default("text-embedding-005"),
   /**
@@ -186,3 +187,6 @@ export function egressHosts(env: InferenceEnv): string[] {
     .map((host) => host.trim())
     .filter((host) => host.length > 0);
 }
+
+// The catalog owns the names; a key added here without a catalog entry fails at boot.
+assertCatalogKeys("inference", Object.keys(InferenceEnvSchema.shape));

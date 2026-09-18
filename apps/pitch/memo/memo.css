@@ -1,0 +1,317 @@
+/*
+ * The memo's theme — the same tokens as the deck and the product.
+ *
+ * A document rather than a slide: A4 pages, 20mm margins, prose set for reading at arm's length.
+ * The values are identical to `deck.css`, which is itself mirrored from
+ * `@ethonline2026/ux-workflow`. A memo that looked like a different company's memo would undo the
+ * point of sending both.
+ */
+
+:root {
+  --ink: #0a0b0d;
+  --panel: #101214;
+  --edge: #1e2126;
+  --edge-2: #2a2e35;
+
+  --fg: #e8eaed;
+  --fg-dim: #9ba1ab;
+  --fg-faint: #5f6670;
+
+  --amber: #ffb300;
+  --amber-dim: #b37f00;
+  --up: #16c784;
+  --down: #ea3943;
+
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@page {
+  size: A4;
+  margin: 20mm;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: #fff;
+  color: #14171a;
+  font-family: var(--font-sans);
+  font-size: 10.5pt;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * The memo prints on white. A dark memo is a deck; a document someone reads, annotates and forwards
+ * is paper. The *identity* carries over — the amber rule, the mono for anything measured, the same
+ * restraint — but the ground does not, because a 3-page investment memo is read, not watched.
+ */
+
+.page {
+  break-after: page;
+  page-break-after: always;
+}
+
+.page:last-child {
+  break-after: auto;
+  page-break-after: auto;
+}
+
+/* ── the running head ───────────────────────────────────────────────────── */
+
+.head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--amber);
+  margin-bottom: 22px;
+}
+
+.head-mark {
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+.head-sub {
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.head-page {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 8.5pt;
+  color: #6b7280;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── type ───────────────────────────────────────────────────────────────── */
+
+h1 {
+  font-size: 21pt;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 600;
+  margin: 0 0 14px;
+}
+
+h2 {
+  font-size: 12pt;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  font-weight: 600;
+  margin: 20px 0 8px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #d7dade;
+}
+
+h2:first-child {
+  margin-top: 0;
+}
+
+p {
+  margin: 0 0 9px;
+  max-width: 78ch;
+}
+
+.lede {
+  font-size: 11pt;
+  line-height: 1.6;
+  color: #374151;
+}
+
+ul {
+  margin: 0 0 10px;
+  padding-left: 16px;
+}
+
+li {
+  margin-bottom: 5px;
+  max-width: 78ch;
+}
+
+strong {
+  font-weight: 600;
+}
+
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dim {
+  color: #6b7280;
+}
+
+/* ── the summary block ──────────────────────────────────────────────────── */
+
+.summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  border: 1px solid #d7dade;
+  margin: 0 0 18px;
+}
+
+.summary-cell {
+  padding: 10px 12px;
+  border-right: 1px solid #d7dade;
+}
+
+.summary-cell:last-child {
+  border-right: 0;
+}
+
+.summary-value {
+  font-family: var(--font-mono);
+  font-size: 14pt;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.summary-value.accent {
+  color: var(--amber-dim);
+}
+
+.summary-label {
+  font-size: 8pt;
+  line-height: 1.35;
+  color: #6b7280;
+  margin-top: 3px;
+}
+
+/* ── tables ─────────────────────────────────────────────────────────────── */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 14px;
+}
+
+th {
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+  text-align: left;
+  font-weight: 400;
+  padding: 0 10px 5px 0;
+  border-bottom: 1px solid #d7dade;
+}
+
+td {
+  font-size: 9.5pt;
+  line-height: 1.45;
+  padding: 6px 10px 6px 0;
+  border-bottom: 1px solid #eceef1;
+  vertical-align: top;
+}
+
+tr:last-child td {
+  border-bottom: 0;
+}
+
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  text-align: right;
+}
+
+/* ── the quote ──────────────────────────────────────────────────────────── */
+
+blockquote {
+  margin: 0 0 12px;
+  padding: 10px 0 10px 14px;
+  border-left: 2px solid var(--amber);
+  background: #fafbfc;
+  font-size: 10pt;
+  line-height: 1.55;
+  color: #374151;
+}
+
+blockquote cite {
+  display: block;
+  margin-top: 5px;
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #6b7280;
+  font-style: normal;
+}
+
+/* ── the gaps list, numbered because it is an order of work ─────────────── */
+
+ol {
+  margin: 0 0 10px;
+  padding-left: 18px;
+}
+
+ol li {
+  margin-bottom: 7px;
+}
+
+/* ── placeholders: loud, so none reaches submission ─────────────────────── */
+
+.ph {
+  font-family: var(--font-mono);
+  font-size: 0.92em;
+  background: #fff8e1;
+  border: 1px dashed var(--amber-dim);
+  padding: 0 4px;
+  white-space: nowrap;
+}
+
+/* ── the closing rule ───────────────────────────────────────────────────── */
+
+.foot {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #d7dade;
+  font-family: var(--font-mono);
+  font-size: 7.5pt;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #6b7280;
+  display: flex;
+  gap: 14px;
+}
+
+/* ── pagination ─────────────────────────────────────────────────────────
+ *
+ * A memo of five pages with clean breaks reads better than three pages of type at 8pt. What matters
+ * is that nothing breaks *through* a thought: a table split across sheets, or a heading stranded alone
+ * at the foot of one.
+ */
+h1,
+h2 {
+  break-after: avoid;
+  page-break-after: avoid;
+}
+
+table,
+blockquote,
+tr,
+li,
+.summary {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}

@@ -2,6 +2,9 @@
 # the app's own dependencies even when the folder lives inside another workspace.
 packages:
   - "../../packages/ux-workflow"
+  - "../../packages/env"
+  - "../../packages/positions"
+  - "../../packages/the-graph"
 
 allowBuilds:
   sharp: true

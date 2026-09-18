@@ -41,6 +41,13 @@ MANIFEST
 node_modules
 .env
 
+# Environment values files. The bare `.env` above does not match `.env.staging` or `.env.production`,
+# and `@ethonline2026/env`'s sync tooling reads exactly those names — so the file it asks you to fill
+# with every staging secret was committable as-is. The examples stay tracked: they are generated from
+# the catalog and a test fails if they drift.
+.env.*
+!.env.example
+
 
 # PyInstaller
 #   Usually these files are written by a python script from a template
@@ -279,3 +286,17 @@ data/higgsfield_trigger_text.txt
 !apps/*/app/lib/**
 !packages/*/scripts/lib/
 !packages/*/scripts/lib/**
+
+# The Python template ignores "ENV/" (a virtualenv). packages/env is a workspace package,
+# and macOS matches these rules case-insensitively. The negations are selective on purpose: a broad
+# "!packages/env/**" would also re-include node_modules, dist and .turbo beneath it.
+!packages/env/
+!packages/env/package.json
+!packages/env/tsconfig.json
+!packages/env/vitest.config.ts
+!packages/env/eslint.config.js
+!packages/env/README.md
+!packages/env/src/
+!packages/env/src/**
+!packages/env/test/
+!packages/env/test/**

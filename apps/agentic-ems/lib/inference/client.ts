@@ -1,3 +1,5 @@
+import "server-only";
+import { serverEnv } from "@/lib/env";
 /**
  * Server-side client for the inference service.
  *
@@ -12,9 +14,10 @@
  *
  * That also makes the app the right place to attach `x-user-id`. It is derived here,
  * server-side — never accepted from the browser — so a client cannot claim to be
- * another user's session. Today it is a configured service identity; when the desk
- * has server-verified Privy sessions it becomes the Privy DID, and nothing else needs
- * to change.
+ * another user's session. It is the caller's **verified Privy DID**, resolved by the
+ * route from the session and passed in. The service scopes a run to whoever this names,
+ * so a value the browser could choose is a tenancy bypass — which is what the configured
+ * service identity this used to send was, however well-intentioned.
  *
  * ## Token minting
  *
@@ -42,18 +45,12 @@ export class InferenceNotConfiguredError extends Error {
 
 /** The service base URL, or `undefined` when the app is not wired to one. */
 export function inferenceBaseUrl(): string | undefined {
-  const url = process.env.INFERENCE_SERVICE_URL?.trim();
+  const url = serverEnv().INFERENCE_SERVICE_URL?.trim();
   return url !== undefined && url.length > 0 ? url.replace(/\/+$/, "") : undefined;
 }
 
-/** The identity the desk presents for its own runs. Server-derived; never from the browser. */
-export function inferenceUserId(): string {
-  const configured = process.env.INFERENCE_USER_ID?.trim();
-  return configured !== undefined && configured.length > 0 ? configured : "agentic-ems-desk";
-}
-
 function serviceAccountCredentials(): Record<string, unknown> | undefined {
-  const raw = process.env.GOOGLE_SERVICE_ACCOUNT_KEY?.trim();
+  const raw = serverEnv().GOOGLE_SERVICE_ACCOUNT_KEY?.trim();
   if (raw === undefined || raw.length === 0) return undefined;
   // Vercel env vars are awkward for multi-line JSON, so base64 is accepted too.
   const json = raw.startsWith("{") ? raw : Buffer.from(raw, "base64").toString("utf8");
@@ -81,15 +78,17 @@ function googleAuth(): GoogleAuth {
  * Headers for one upstream call, including a freshly-minted bearer token.
  *
  * @param baseUrl the service URL, which is also the token's required `aud`.
+ * @param userId the caller's verified Privy DID, which the service scopes the run to.
  */
 export async function inferenceAuthHeaders(
   baseUrl: string,
+  userId: string,
 ): Promise<Record<string, string>> {
   const headers: Record<string, string> = {
-    "x-user-id": inferenceUserId(),
+    "x-user-id": userId,
   };
 
-  const override = process.env.INFERENCE_ID_TOKEN?.trim();
+  const override = serverEnv().INFERENCE_ID_TOKEN?.trim();
   if (override !== undefined && override.length > 0) {
     headers["authorization"] = `Bearer ${override}`;
     return headers;
