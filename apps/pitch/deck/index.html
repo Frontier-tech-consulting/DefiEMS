@@ -1,0 +1,771 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Agentic EMS — R3sidency x Construct</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="deck.css" />
+  </head>
+
+  <body>
+    <!-- ── 1 ────────────────────────────────────────────────────────────── -->
+    <section id="s1" class="slide title-slide">
+      <div class="mark">Agentic EMS</div>
+      <h1>A trade EMS for on-chain capital, where the agent's reasoning is a database query away.</h1>
+      <p class="lede">
+        Constraint-bounded agents reallocate capital against quantile forecasts, and every decision
+        traces to the projection that justified it.
+      </p>
+      <div class="footer">
+        <span>R3sidency x Construct</span>
+        <span>Fabric Ventures</span>
+        <span>September 2026</span>
+      </div>
+    </section>
+
+    <!-- ── 2 ────────────────────────────────────────────────────────────── -->
+    <section id="s2" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">The gap</span>
+        <span class="slide-name">on-chain capital is machine-traded and human-managed</span>
+        <span class="slide-index">02</span>
+      </div>
+      <div class="slide-body">
+        <h2>The volume moved to machines first. The tooling did not.</h2>
+
+        <div class="figures">
+          <div class="figure">
+            <span class="figure-value amber">~30%</span>
+            <span class="figure-label"
+              >of TVL in top-tier DeFi pools is managed by autonomous agents</span
+            >
+            <span class="figure-source">Chainlink × Ark Invest, May 2026</span>
+          </div>
+          <div class="figure">
+            <span class="figure-value">80%</span>
+            <span class="figure-label">of DeFi transaction volume is non-human</span>
+            <span class="figure-source">Fabric Ventures, Mar 2026</span>
+          </div>
+          <div class="figure">
+            <span class="figure-value">26M</span>
+            <span class="figure-label">smart wallets, and the standards are only now arriving</span>
+            <span class="figure-source">Fabric Ventures, Mar 2026</span>
+          </div>
+        </div>
+
+        <hr class="rule" />
+
+        <div class="columns two">
+          <div>
+            <div class="col-head">What a desk has in TradFi</div>
+            <ul>
+              <li>Order management, execution management, risk, and a record — four things, one surface.</li>
+              <li>Thirty years of hardening against the failure it was bought to prevent.</li>
+              <li>Bloomberg is the noun; the desk is the verb.</li>
+            </ul>
+          </div>
+          <div>
+            <div class="col-head accent">What a desk has on-chain</div>
+            <ul>
+              <li>A block explorer, a multisig, a spreadsheet and a Telegram thread.</li>
+              <li>Four windows onto the position. No system holding it.</li>
+              <li><strong>Non-consumption is the incumbent</strong>, and it is free.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 3 ────────────────────────────────────────────────────────────── -->
+    <section id="s3" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">What we built</span>
+        <span class="slide-name">the terminal</span>
+        <span class="slide-index">03</span>
+      </div>
+      <div class="slide-body">
+        <div class="columns two" style="grid-template-columns: 1.35fr 1fr; gap: 48px">
+          <div>
+            <img
+              src="assets/console.png"
+              alt="The indexer console: a dependency strip, a run-lifecycle diagram, and a pool universe read from the deployment."
+              style="width: 100%; border: 1px solid var(--edge)"
+            />
+            <p class="note" style="margin-top: 10px">
+              The console, live. The pool universe is read from the deployment — an operator never
+              types an address.
+            </p>
+          </div>
+          <div>
+            <ul>
+              <li>
+                <strong>Ask a question.</strong> An agent runs a five-node cycle: retrieval, yield
+                projection, synthesis, guardrails, readjustment.
+              </li>
+              <li>
+                <strong>Forecasts carry a band.</strong> TimesFM-3 issues q10/q50/q90, stored in a
+                forecast ledger — not a single predicted number.
+              </li>
+              <li>
+                <strong>Guardrails gate the answer.</strong> A breached constraint forces a re-plan
+                rather than a trade.
+              </li>
+              <li>
+                <strong>The record is a row.</strong> Every figure on the surface is a query against
+                what was stored, not a rendering of what the model said.
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="spacer"></div>
+      </div>
+    </section>
+
+    <!-- ── 4 ────────────────────────────────────────────────────────────── -->
+    <section id="s4" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">A moment, worked</span>
+        <span class="slide-name">product:moment fit, when the product is a position</span>
+        <span class="slide-index">04</span>
+      </div>
+      <div class="slide-body">
+        <h2>Yield breaks its band. The position flees. It lands in a vault.</h2>
+
+        <div class="flight">
+          <div class="flight-step">
+            <span class="flight-n">01 · trigger</span>
+            <span class="flight-title">The band breaks</span>
+            <span class="flight-detail"
+              >A strategy's yield falls under its floor, or its volatility breaches its cap. The
+              condition is a forecast with a confidence interval, not a threshold someone typed.</span
+            >
+          </div>
+          <div class="flight-step">
+            <span class="flight-n">02 · swap</span>
+            <span class="flight-title">An instruction we wrote</span>
+            <span class="flight-detail"
+              >The volatile leg swaps to a stablecoin through a SwapVM program containing
+              <span class="mono amber">YieldBandFlight</span> at opcode
+              <span class="mono">0xb3</span>. The diff against the canonical router is the length of
+              one <span class="mono">if</span>.</span
+            >
+          </div>
+          <div class="flight-step">
+            <span class="flight-n">03 · settle</span>
+            <span class="flight-title">Both legs, one call</span>
+            <span class="flight-detail"
+              ><span class="mono">StablecoinRefugeApp</span> holds no pricing logic. Its whole job is
+              that one call moves both legs back to the maker — removing the window of
+              half-executed risk between the swap and the deposit.</span
+            >
+          </div>
+          <div class="flight-step">
+            <span class="flight-n">04 · deposit</span>
+            <span class="flight-title">A real position</span>
+            <span class="flight-detail"
+              >The proceeds become shares in a Morpho vault, asserted non-zero in the fork test. The
+              intervention existed for one block and dissolved.</span
+            >
+          </div>
+        </div>
+
+        <div class="columns two" style="margin-top: 34px">
+          <div>
+            <blockquote>
+              An intervention, expressed as a hyper-contextualized, intimate experience assembled on
+              the fly, arriving precisely when needed, dissolved once its purpose is served.
+              <cite>Fabric Ventures — The Emergence of the Machine Economy</cite>
+            </blockquote>
+          </div>
+          <div>
+            <div class="col-head accent">Two Aqua apps, deliberately separate</div>
+            <ul>
+              <li>
+                <strong><span class="mono">AgenticEMSSwapVMRouter</span></strong> — canonical
+                <span class="mono">SwapVM</span> + <span class="mono">AquaOpcodes</span>, plus our
+                instruction. A superset: canonical programs still execute on it at the same opcode,
+                which is why adopting it is not a migration.
+              </li>
+              <li>
+                <strong><span class="mono">StablecoinRefugeApp</span></strong> — the atomic exit.
+                Separation is the design, not an accident of packaging.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5 ────────────────────────────────────────────────────────────── -->
+    <section id="s5" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">Evidence</span>
+        <span class="slide-name">why you can believe the execution</span>
+        <span class="slide-index">05</span>
+      </div>
+      <div class="slide-body">
+        <h2>Every line on this slide is checkable in the repository.</h2>
+        <p class="lede" style="margin-top: 12px">
+          Method and path both named. Reproducible at a pinned fork block, with the evidence
+          committed.
+        </p>
+
+        <table style="margin-top: 24px">
+          <thead>
+            <tr>
+              <th style="width: 62%">Claim</th>
+              <th>Where it is checked</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>29 contract tests, no network</td>
+              <td class="mono">forge test</td>
+            </tr>
+            <tr>
+              <td>
+                <strong>21/21 registry addresses verified against live chain state</strong> — on
+                Optimism <em>and</em> Polygon
+              </td>
+              <td class="mono">pnpm run smoke</td>
+            </tr>
+            <tr>
+              <td><span class="mono">quote(amountOut) === swap(amountOut)</span></td>
+              <td class="mono">fork test, re-derived</td>
+            </tr>
+            <tr>
+              <td>
+                The fill landed <strong>exactly on the band</strong> — 3,400 USDC for 1 WETH
+              </td>
+              <td class="mono">both</td>
+            </tr>
+            <tr>
+              <td>
+                <strong
+                  ><span class="mono">0xb3</span> is ours</strong
+                >: the same program runs on our router and reverts
+                <span class="mono">UnknownOpcode(0xb3)</span> on the canonical one
+              </td>
+              <td class="mono">OpcodeOwnershipTest</td>
+            </tr>
+            <tr>
+              <td>The guard is <strong>inert when unarmed</strong></td>
+              <td class="mono">a paired negative test</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="note" style="margin-top: 18px">
+          Both directions are asserted on the opcode claim. A guard a taker could sidestep by
+          pointing at a different router would be worth nothing; a silent misinterpretation of an
+          upstream opcode would be worse than nothing.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 6 ────────────────────────────────────────────────────────────── -->
+    <section id="s6" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">The audit trail</span>
+        <span class="slide-name">the part nobody else builds</span>
+        <span class="slide-index">06</span>
+      </div>
+      <div class="slide-body">
+        <div class="columns two" style="grid-template-columns: 1.05fr 1fr; gap: 52px">
+          <div>
+            <blockquote>
+              Will the agents operating in this economy carry verifiable identity, transparent
+              objectives, and genuine accountability? Or will it operate, as Kafka's court operated,
+              from behind a door that recedes the faster you walk toward it?
+              <cite>Fabric Ventures — The Emergence of the Machine Economy</cite>
+            </blockquote>
+            <p class="lede" style="margin-top: 26px">
+              The difference between a Dickensian and a Kafkaesque outcome is architectural. This is
+              the architecture.
+            </p>
+          </div>
+          <div>
+            <div class="col-head accent">What is actually enforced in code</div>
+            <ul>
+              <li>
+                <strong>A decision cannot exist without citing its evidence.</strong>
+                <span class="mono"
+                  >citations: z.array(CitationIdSchema).min(1)</span
+                >
+                — a reallocation that cannot name the projection or constraint it rests on does not
+                validate.
+              </li>
+              <li>
+                <strong>An ungrounded answer degrades rather than passes.</strong> When the model
+                returns a decision that fails validation, the cycle emits an explicit
+                <span class="mono">HOLD</span> marked <span class="mono">ungrounded</span> and names
+                the failure in the audit — instead of throwing the synthesis away.
+              </li>
+              <li>
+                <strong>Constraints are typed</strong>, and a breach forces a re-plan rather than a
+                trade.
+              </li>
+              <li>
+                <strong>The surface states what it cannot verify</strong> — including, today, that
+                the risk store is unreachable and the inference service runs mock.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 7 ────────────────────────────────────────────────────────────── -->
+    <section id="s7" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">The stack</span>
+        <span class="slide-name">data to settlement</span>
+        <span class="slide-index">07</span>
+      </div>
+      <div class="slide-body">
+        <div class="stack">
+          <div class="stage">
+            <span class="stage-name">Data</span>
+            <span class="stage-item">Hourly pool metrics across protocols and chains</span>
+            <span class="stage-note">TimescaleDB · The Graph</span>
+          </div>
+          <div class="stage">
+            <span class="stage-name">Forecast</span>
+            <span class="stage-item">TimesFM-3 quantile projections, q10/q50/q90</span>
+            <span class="stage-note">Forecast ledger, with calibration</span>
+          </div>
+          <div class="stage">
+            <span class="stage-name">Decision</span>
+            <span class="stage-item">A five-node agent cycle proposes reallocations</span>
+            <span class="stage-note">v0.1 LangGraph</span>
+          </div>
+          <div class="stage">
+            <span class="stage-name">Risk</span>
+            <span class="stage-item">Typed constraints gate the proposal; breaches re-plan</span>
+            <span class="stage-note">Risk profile · calibration · outcomes</span>
+          </div>
+          <div class="stage">
+            <span class="stage-name">Custody</span>
+            <span class="stage-item">A Safe owned by an embedded signer</span>
+            <span class="stage-note">Privy · WalletConnect</span>
+          </div>
+          <div class="stage">
+            <span class="stage-name">Settlement</span>
+            <span class="stage-item">Atomic swaps, routed and guarded on-chain</span>
+            <span class="stage-note">Aqua/SwapVM · Uniswap v4 · 1inch · Morpho</span>
+          </div>
+        </div>
+
+        <hr class="rule" style="margin: 34px 0 0" />
+
+        <div class="columns three" style="margin-top: 22px">
+          <div>
+            <div class="col-head">The terminal</div>
+            <p class="note">
+              The desk and the console — the surface an operator actually watches. Live today.
+            </p>
+          </div>
+          <div>
+            <div class="col-head">The infrastructure</div>
+            <p class="note">
+              Forecast, decision, risk, custody and settlement, as one pipeline rather than five
+              scripts.
+            </p>
+          </div>
+          <div>
+            <div class="col-head accent">The instrument</div>
+            <p class="note">
+              The web3-aligned ETF wrapper. This is the market, and it is the part not yet built.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 8 ────────────────────────────────────────────────────────────── -->
+    <section id="s8" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">Market</span>
+        <span class="slide-name">sized, with the method named</span>
+        <span class="slide-index">08</span>
+      </div>
+      <div class="slide-body">
+        <div class="columns two" style="grid-template-columns: 1fr 1.1fr; gap: 52px">
+          <div>
+            <div class="col-head">Top-down — the fee pool on managed on-chain capital</div>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Crypto hedge fund AUM</td>
+                  <td class="num" style="text-align: right">$95.0B</td>
+                </tr>
+                <tr>
+                  <td>Actively managed tokenized / RWA</td>
+                  <td class="num" style="text-align: right">$26.7B</td>
+                </tr>
+                <tr>
+                  <td><strong>Addressable capital</strong></td>
+                  <td class="num" style="text-align: right"><strong>$121.7B</strong></td>
+                </tr>
+                <tr>
+                  <td>× 25 bps execution + management</td>
+                  <td class="num" style="text-align: right">—</td>
+                </tr>
+                <tr>
+                  <td><strong>TAM</strong></td>
+                  <td class="num amber" style="text-align: right"><strong>$304M / yr</strong></td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="note" style="margin-top: 12px">
+              Sources: CoinLaw 2026 · RWA.xyz Jun 2026.
+            </p>
+          </div>
+
+          <div>
+            <div class="col-head accent">Bottom-up — the segment that rebalances</div>
+            <table>
+              <tbody>
+                <tr>
+                  <td>Crypto hedge funds</td>
+                  <td class="num" style="text-align: right">400+</td>
+                </tr>
+                <tr>
+                  <td>Mean AUM</td>
+                  <td class="num" style="text-align: right">$237M</td>
+                </tr>
+                <tr>
+                  <td><strong>SAM</strong> at 25 bps</td>
+                  <td class="num" style="text-align: right"><strong>$237M / yr</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>SOM</strong> at 2% penetration</td>
+                  <td class="num up" style="text-align: right">$4.75M / yr</td>
+                </tr>
+                <tr>
+                  <td><strong>SOM</strong> at 5% penetration</td>
+                  <td class="num up" style="text-align: right">$11.85M / yr</td>
+                </tr>
+              </tbody>
+            </table>
+            <p class="note" style="margin-top: 12px">
+              Source: Crypto Fund Research, Mar 2026. The split between funds that trade on-chain and
+              those that hold is <span class="ph">[share of funds that trade on-chain]</span> — not
+              sourced, so not guessed.
+            </p>
+          </div>
+        </div>
+
+        <hr class="rule" />
+
+        <div class="columns three">
+          <div>
+            <div class="col-head">What we are claiming</div>
+            <p class="note">
+              A <strong style="color: var(--fg)">$5–12M ARR</strong> business on the fund segment at
+              2–5% penetration. Real, and not a decacorn.
+            </p>
+          </div>
+          <div>
+            <div class="col-head">What makes it large</div>
+            <p class="note">
+              The ETF layer, where the capital base is orders of magnitude bigger.
+              <span class="ph">[tokenized fund market, sourced]</span> — I could not source a
+              credible projection and will not invent one.
+            </p>
+          </div>
+          <div>
+            <div class="col-head">The number not to quote</div>
+            <p class="note">
+              $21.5T a year of stablecoin volume — of which <strong>88%</strong> is exchange trading,
+              bots and arbitrage. Flow we do not serve.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 9 ────────────────────────────────────────────────────────────── -->
+    <section id="s9" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">Competition</span>
+        <span class="slide-name">what the audit trail is made of</span>
+        <span class="slide-index">09</span>
+      </div>
+      <div class="slide-body">
+        <div class="columns two" style="grid-template-columns: 1fr 1fr; gap: 52px">
+          <div>
+            <p class="note" style="margin-bottom: 12px">
+              Vertical — reported afterwards ↑ structurally required &nbsp;·&nbsp; Horizontal —
+              policy-driven → forecast-driven
+            </p>
+            <div class="quadrant">
+
+              <span class="plot us" style="right: 14%; top: 14%"
+                ><b>Agentic EMS</b>forecast, and a decision that cannot cite its evidence does not
+                validate</span
+              >
+              <span class="plot" style="left: 8%; bottom: 16%"
+                ><b>Brava · vaults</b>a codified mandate, reported on afterwards</span
+              >
+              <span class="plot" style="right: 16%; bottom: 16%"
+                ><b>Agent platforms</b>forecast-ish, unconstrained, reasoning unrecorded</span
+              >
+            </div>
+          </div>
+
+          <div>
+            <div class="col-head">Three kinds of alternative</div>
+            <ul>
+              <li>
+                <strong>Direct — Brava Finance.</strong> The closest competitor on every axis: Safe
+                custody, mandate automation, risk scoring, audit-ready reporting. The difference is
+                <strong>policy versus forecast</strong>, and <strong>reported versus required</strong
+                >.
+              </li>
+              <li>
+                <strong>Indirect — vaults, TradFi EMS vendors, institutional DeFi gateways.</strong>
+                Same budget, different instrument. A vault <em>is</em> the automation, so an EMS is
+                unnecessary; a TradFi EMS owns the word and not the chain.
+              </li>
+              <li>
+                <strong>Non-consumption — a human with a multisig.</strong> Free, understood, never
+                reviewed. <strong>The real incumbent</strong>, and the first slide of this section.
+              </li>
+            </ul>
+            <p class="note" style="margin-top: 18px">
+              The automated-and-accountable quadrant is <strong style="color: var(--fg)">not empty</strong
+              >, and we are not picking different axes to pretend otherwise. What is empty is
+              forecast-driven <em>and</em> structurally required — a narrower claim, and a true one.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 10 ───────────────────────────────────────────────────────────── -->
+    <section id="s10" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">Why now</span>
+        <span class="slide-name">three inventions, and the standards that just landed</span>
+        <span class="slide-index">10</span>
+      </div>
+      <div class="slide-body">
+        <h2>Any two of these without the third, and you hit a ceiling.</h2>
+
+        <div class="columns three" style="margin-top: 30px">
+          <div>
+            <div class="col-head">Specialised accelerated compute</div>
+            <p class="note">
+              TimesFM-3 issues a quantile band per pool in under a second. Two years ago this was a
+              research paper.
+            </p>
+          </div>
+          <div>
+            <div class="col-head">Large language models</div>
+            <p class="note">
+              An agent that can read a constraint set, propose a reallocation, and cite what it read.
+            </p>
+          </div>
+          <div>
+            <div class="col-head accent">Programmable blockchains</div>
+            <p class="note">
+              Settlement with no intermediary, and a receipt for every action — <strong
+                style="color: var(--fg)"
+                >the audit trail is native to the substrate.</strong
+              >
+            </p>
+          </div>
+        </div>
+
+        <hr class="rule" style="margin: 32px 0" />
+
+        <div class="columns three">
+          <div>
+            <div class="col-head">ERC-8004</div>
+            <p class="note">Agent reputation, portable across counterparties. Mainnet, Jan 2026.</p>
+          </div>
+          <div>
+            <div class="col-head">EIP-4337</div>
+            <p class="note">
+              26M smart wallets. An agent with an account rather than a private key in a file.
+            </p>
+          </div>
+          <div>
+            <div class="col-head">Settlement at scale</div>
+            <p class="note">
+              $27.6T settled on-chain in 2024 — rivalling Visa and Mastercard combined.
+            </p>
+          </div>
+        </div>
+
+        <div class="spacer"></div>
+
+        <p class="note">
+          Sources: Fabric Ventures, <em>The Emergence of the Machine Economy</em> (Mar 2026) ·
+          Chainlink × Ark Invest (May 2026).
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 11 ───────────────────────────────────────────────────────────── -->
+    <section id="s11" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">The next 12 weeks</span>
+        <span class="slide-name">what we know is missing</span>
+        <span class="slide-index">11</span>
+      </div>
+      <div class="slide-body">
+        <h2>This list is written by us, about us, and it is already in the repository.</h2>
+
+        <table style="margin-top: 26px">
+          <thead>
+            <tr>
+              <th style="width: 34%">Gap</th>
+              <th>Why it is the next thing</th>
+              <th style="width: 18%">Kind</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Nothing is committed yet</strong></td>
+              <td>22 atomic commits planned, each green. Process, not engineering.</td>
+              <td class="mono">mechanical</td>
+            </tr>
+            <tr>
+              <td><strong>Intent persistence</strong></td>
+              <td>
+                <span class="mono">exec_intents</span> carries the
+                <span class="mono">typed_data_hash</span> binding a signature to the payload an
+                operator reviewed. No repository writes or reads it, so <span class="mono">:id</span>
+                is a caller-supplied handle.
+              </td>
+              <td class="mono amber">next</td>
+            </tr>
+            <tr>
+              <td><strong>Custody caps unenforced</strong></td>
+              <td>
+                <span class="mono">perTxCapUsdc</span>, <span class="mono">dailyCapUsdc</span>,
+                <span class="mono">allowlistOk</span> exist as schema and nothing consults them.
+                Enforcing needs the store above.
+              </td>
+              <td class="mono amber">next</td>
+            </tr>
+            <tr>
+              <td><strong>Position creation unencoded</strong></td>
+              <td>
+                The entry point is an actions batch whose command bytes could not be retrieved. Left
+                rather than guessed — a wrong byte executes the neighbouring action.
+              </td>
+              <td class="mono">deferred</td>
+            </tr>
+            <tr>
+              <td><strong>The ETF wrapper</strong></td>
+              <td>The instrument this is infrastructure for. The market, not yet the product.</td>
+              <td class="mono">roadmap</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="spacer"></div>
+
+        <p class="note">
+          A roadmap that names its own gaps is a stronger signal of relentless execution than a list
+          of features.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 12 ───────────────────────────────────────────────────────────── -->
+    <section id="s12" class="slide">
+      <div class="slide-head">
+        <span class="slide-kicker">Team</span>
+        <span class="slide-name">who is building it</span>
+        <span class="slide-index">12</span>
+      </div>
+      <div class="slide-body">
+        <div class="col-head accent">Dhruv Malik — founder</div>
+        <p class="note" style="max-width: 84ch">
+          Six years as a Web3 protocol engineer and smart-contracts auditor, and co-founder of
+          <strong style="color: var(--fg)">Extra Labs</strong>, a geospatial 3D reconstruction
+          platform. The execution half of this product is work he has shipped and audited before.
+        </p>
+
+        <hr class="rule" style="margin: 22px 0 20px" />
+
+        <div class="col-head">Specialists</div>
+        <p class="note" style="max-width: 84ch">
+          <span class="ph">[specialist name]</span> — a former fixed-income trader who went on to run
+          DeFi at a major L2 chain, in discussion as an external specialist. He owns the half a
+          protocol engineer cannot claim alone: how a desk sizes, hedges and defends a position when
+          the band breaks.
+        </p>
+        <p class="note" style="max-width: 84ch; margin-top: 10px">
+          <span class="ph">[mentor name]</span> — five to six years as a fixed-income trader at
+          Bloomberg, building some of the terminal's most complex components, multi-asset risk
+          synthesis among them. He advises on the risk layer the guardrails are built from.
+        </p>
+
+        <hr class="rule" style="margin: 22px 0 20px" />
+
+        <div class="col-head">Why this team</div>
+        <p class="note" style="max-width: 84ch">
+          Two halves, two résumés. Protocol engineering — <span class="mono">0xb3</span> provably
+          ours, Safe-owned custody, an audit trail a schema enforces rather than a report somebody
+          writes — is what the founder has shipped and audited for six years. Fixed-income trading —
+          when to move, what the risk is, how a desk defends a position — is what the specialists
+          bring, one from a desk and one from the machine those desks already trust for risk.
+        </p>
+      </div>
+    </section>
+
+    <!-- ── 13 ───────────────────────────────────────────────────────────── -->
+    <section id="s13" class="slide title-slide">
+      <div class="slide-head" style="border: 0; padding: 0">
+        <span class="slide-kicker">The ask</span>
+        <span class="slide-index">13</span>
+      </div>
+      <h1 style="margin-top: 32px; font-size: 44px">
+        $300K, twelve weeks, and v1 in front of the desks that trade on-chain.
+      </h1>
+      <p class="lede">
+        The spend is ordered: build the version that carries the record, then buy the room it is
+        demonstrated in.
+      </p>
+
+      <div class="columns three" style="margin-top: 34px">
+        <div>
+          <div class="col-head accent">1 — Build v1</div>
+          <p class="note">
+            Inference and cloud for the platform's own research, and a minimal salary for a twelve-week
+            base in SF or London.
+          </p>
+        </div>
+        <div>
+          <div class="col-head">2 — Buy the room</div>
+          <p class="note">
+            The Web3 events worth being at, promoted through Aladdin DAO, with a tutorial series that
+            shows the system working instead of describing it.
+          </p>
+        </div>
+        <div>
+          <div class="col-head">3 — Open the market</div>
+          <p class="note">
+            From what remains: governance proposals to prominent lending protocols and a prediction
+            market. Once v1 is live, sales engineering with the trading firms that run Web3 desks.
+          </p>
+        </div>
+      </div>
+      <div class="spacer"></div>
+      <div class="footer" style="position: static; border: 0; padding: 0">
+        <span>Agentic EMS</span>
+        <span>R3sidency x Construct · September 2026</span>
+      </div>
+    </section>
+  </body>
+</html>
